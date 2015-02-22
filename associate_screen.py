@@ -16,9 +16,12 @@ import webbrowser
 def showCode_browser(code, url_add):
 
     url = url_add + 'new_screen.html';
-    html = ("<html><head><style>body {margin:50px 0px; padding:0px;text-align:center;} #Content "
-            "{ width:500px; margin:0px auto; text-align:left; padding:15px; background-color:#eee; }"
-            "</style></head><body><div id='Content'>"+code+"</div></body></html>");
+    html = ("<html><head><style>body {margin:100px 0px; padding:0px;text-align:center; background: url(bg.jpg) no-repeat center center scroll; background-size: cover} #Content "
+            "{ width:500px; margin:0px auto; text-align:left; padding:15px; margin-top:100px; background-color:#fff;"
+            "-webkit-box-shadow: 4px 4px 0px 0px rgba(184,184,184,1); -moz-box-shadow: 4px 4px 0px 0px rgba(184,184,184,1);"
+            "box-shadow: 4px 4px 0px 0px rgba(184,184,184,1); border-radius: 5px; }</style></head><body><img src='logo.png'/>"
+            "<div id='Content'><span style='font-weight: bold; padding: 20px; font-family: Verdana, Geneva, sans-serif; '>Screen code:</span>"
+            +code+"</div></body></html>");
     f = open(url, 'w');
     f.write(html);
     f.close();
