@@ -1,4 +1,4 @@
-sys
+
 configparser
-requests
-webbrowser
+
+
