@@ -11,13 +11,13 @@ import sys
 import webbrowser
 
 
-def playVideo_browser(filename, url_add):
+def playVideo_browser(filename, url_file, url_add):
 	#maybe i have to add the tipe of all files type="video/mp4"
-	url = url_add + '/' + 'player.html';
+	url = url_add +'player.html';
 	html = ("<html><head><style>video#bgvid {position: fixed; right: 0; bottom: 0;"
 			"min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -100;" 
 			"background-size: cover;} </style></head><body><video autoplay id='bgvid'>"
-			"<source src="+url_add +"/"+ filename+"></video></body><script>"
+			"<source src='"+url_file +"/"+ filename+"'></video></body><script>"
 			"var video1 = document.getElementById('bgvid'); video1.addEventListener('ended', videoEndHandler, false);"
 			"function videoEndHandler(e) { window.close(); } </script> </html>");
 	f = open(url, 'w');

@@ -20,7 +20,7 @@ def main(argv=None):
 	asset = scheduler2.get_next_asset();
 	
 	file_name = asset["path"].split('/')[-1]
-	playVideo_browser(file_name, config['DEFAULT']['url_assets'])
+	playVideo_browser(file_name, config['DEFAULT']['url_assets'], config['DEFAULT']['url'])
 	
 	return
 
