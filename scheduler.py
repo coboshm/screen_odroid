@@ -1,23 +1,20 @@
-#!/usr/bin/env python
 
 """
-Simple module to download the files that we have to play
+Simple module to download the files that we have to play and the schedul
 """
 __version__ = '0.0.1'
 __copyright__ = "Copyright 2015, Marc Cobos"
 __author__  = 'coboshernandez@gmail.com'
 
-import sys
 import configparser
 import requests
 import json
 import urllib2
-import sys
 from os import path, makedirs, getloadavg, statvfs, mkdir, getenv, remove
-
 
 config = configparser.ConfigParser();
 config.read('config.ini');
+
 
 def internet_on(host, port):
     try:
@@ -90,10 +87,3 @@ class scheduler(object):
 		self.index = (self.index + 1) % self.nassets
 		return self.assets[idx]
 
-
-def main(argv=None):
-	scheduler2 = scheduler();
-	return
-
-if __name__ == "__main__":
-  sys.exit(main())
