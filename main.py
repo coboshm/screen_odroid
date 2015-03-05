@@ -11,17 +11,23 @@ import sys
 import configparser
 from player import *
 from scheduler import *
+from time import sleep
 
 def main(argv=None):
 	config = configparser.ConfigParser();
 	config.read('config.ini');
 	
 	scheduler2 = scheduler();
-	asset = scheduler2.get_next_asset();
-	
-	file_name = asset["path"].split('/')[-1]
-	playVideo_browser(file_name, config['DEFAULT']['url_assets'], config['DEFAULT']['url'])
-	
+
+	while True:
+		asset = scheduler2.get_next_asset();
+		file_name = asset["path"].split('/')[-1];
+		if asset["tipo"].split('/')[-2] == 'image':
+			playImage_browser_originalSize(file_name, config['DEFAULT']['url_assets'], config['DEFAULT']['url'], asset["duration"]*1000)
+		else:
+			playVideo_browser(file_name, config['DEFAULT']['url_assets'], config['DEFAULT']['url'])
+
+		sleep(asset["duration"])
 	return
 
 if __name__ == "__main__":

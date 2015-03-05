@@ -26,3 +26,32 @@ def playVideo_browser(filename, url_file, url_add):
 	webbrowser.open_new('file://'+url);
 	return
 
+def playImage_browser_expand(filename, url_file, url_add, duration):
+	url = url_add +'expandImage.html';
+	html = ("<html><head><style> html { "
+			"background:url('"+url_file +"/"+ filename+"')"
+			" center center no-repeat; background-size: 100% 100%; } </style></head>"
+			"<body></body><script> setTimeout(closeBrowser, "+ str(duration)  +"); function closeBrowser(e) {"
+			"window.close(); } </script> </html>");
+	f = open(url, 'w');
+	f.write(html);
+	f.close();
+	webbrowser.open_new('file://'+url);
+	return
+
+def playImage_browser_originalSize(filename, url_file, url_add, duration):
+	url = url_add +'originalImage.html';
+	html = ("<html><head><style> html {background:url('"+url_file +"/"+ filename+"') "
+			"center center no-repeat;} </style></head><body></body><script>"
+			"setTimeout(closeBrowser, "+ str(duration) + " );function closeBrowser(e) {"
+			"window.close(); } </script></html>");
+	f = open(url, 'w');
+	f.write(html);
+	f.close();
+	webbrowser.open_new('file://'+url);
+	return
+
+def playImage_browser_originalSize(filename, url_file, url_add, duration):
+	url = url_add +'black.html';
+	webbrowser.open_new('file://'+url);
+	return
