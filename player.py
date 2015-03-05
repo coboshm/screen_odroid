@@ -51,7 +51,7 @@ def playImage_browser_originalSize(filename, url_file, url_add, duration):
 	webbrowser.open_new('file://'+url);
 	return
 
-def playImage_browser_originalSize(filename, url_file, url_add, duration):
+def black_screen(url_add):
 	url = url_add +'black.html';
 	webbrowser.open_new('file://'+url);
 	return

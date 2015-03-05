@@ -19,6 +19,8 @@ def main(argv=None):
 	
 	scheduler2 = scheduler();
 
+	black_screen(config['DEFAULT']['url']);
+
 	while True:
 		asset = scheduler2.get_next_asset();
 		file_name = asset["path"].split('/')[-1];
