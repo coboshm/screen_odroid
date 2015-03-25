@@ -26,22 +26,25 @@ def main(argv=None):
 
 	black_screen(url_templates);
 	if config['DEFAULT']['active'] != '1':
-		if (config['DEFAULT']['code_screen'] == '') :
-			r = requests.post('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/new_screen');
-			config.set('DEFAULT','code_screen',r.json());
-			with open('config.ini', 'wb') as configfile:
-				config.write(configfile);
-			showCode_browser(config['DEFAULT']['code_screen'], url_templates);
+		active_screen(config['DEFAULT']['code_screen'])
+		config.read('config.ini');
+		if config['DEFAULT']['active'] != '1':
+			if (config['DEFAULT']['code_screen'] == '') :
+				r = requests.post('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/new_screen');
+				config.set('DEFAULT','code_screen',r.json());
+				with open('config.ini', 'wb') as configfile:
+					config.write(configfile);
+				showCode_browser(config['DEFAULT']['code_screen'], url_templates);
 
-		else :
-			#Case that already have code but not associated to a user 
-			#we only have to show the code in firefox
-			showCode_browser(config['DEFAULT']['code_screen'], url_templates);
-	    
-		while config['DEFAULT']['active'] != '1':
-			active_screen(config['DEFAULT']['code_screen'])
-			sleep(30)
-			config.read('config.ini');
+			else :
+				#Case that already have code but not associated to a user 
+				#we only have to show the code in firefox
+				showCode_browser(config['DEFAULT']['code_screen'], url_templates);
+		    
+			while config['DEFAULT']['active'] != '1':
+				active_screen(config['DEFAULT']['code_screen'])
+				sleep(30)
+				config.read('config.ini');
     
 	scheduler2 = scheduler();
 	while True:
