@@ -11,12 +11,16 @@ import sys
 import configparser
 from player import *
 from scheduler import *
+import os
 from time import sleep
 
 def main(argv=None):
 	config = configparser.ConfigParser();
 	config.read('config.ini');
-	
+
+	url_assets = os.path.abspath(os.path.join(os.path.dirname(__file__),'/playlist'))
+	url_templates = os.path.abspath(os.path.join(os.path.dirname(__file__),'/templates'))
+
 	scheduler2 = scheduler();
 
 	black_screen(config['DEFAULT']['url']);
@@ -25,11 +29,11 @@ def main(argv=None):
 		asset = scheduler2.get_next_asset();
 		file_name = asset["path"].split('/')[-1];
 		if asset["tipo"].split('/')[-2] == 'image':
-			playImage_browser_originalSize(file_name, config['DEFAULT']['url_assets'], config['DEFAULT']['url'], asset["duration"]*1000)
+			playImage_browser_originalSize(file_name, url_assets, url_templates, asset["duration"]*1000)
 		else:
-			playVideo_browser(file_name, config['DEFAULT']['url_assets'], config['DEFAULT']['url'])
+			playVideo_browser(file_name, url_assets, url_templates)
 
-		sleep(asset["duration"])
+		sleep(asset["duration"]-1)
 	return
 
 if __name__ == "__main__":

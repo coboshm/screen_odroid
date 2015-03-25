@@ -10,11 +10,23 @@ import configparser
 import requests
 import json
 import urllib2
-from os import path, makedirs, getloadavg, statvfs, mkdir, getenv, remove
+import shutil
+import os
 
 config = configparser.ConfigParser();
 config.read('config.ini');
 
+url_assets = os.path.abspath(os.path.join(os.path.dirname(__file__),'/playlist'))
+url_assets_new = os.path.abspath(os.path.join(os.path.dirname(__file__),'/playlist_new'))
+url_templates = os.path.abspath(os.path.join(os.path.dirname(__file__),'/templates'))
+
+def delete_folder(pth) :
+    for sub in pth.iterdir() :
+        if sub.is_dir() :
+            delete_folder(sub)
+        else :
+            sub.unlink()
+    pth.rmdir()
 
 def internet_on(host, port):
     try:
@@ -27,10 +39,12 @@ def copy(row):
 
 	file_name = row["path"].split('/')[-1]
 
-	if not path.isdir(config['DEFAULT']['url_assets']):
-		makedirs(config['DEFAULT']['url_assets'])
-	if not path.isfile(config['DEFAULT']['url_assets']+ '/' +file_name):
-		f = open(config['DEFAULT']['url_assets'] + '/' + file_name, 'wb')
+	if not path.isdir(url_assets_new):
+		makedirs(url_assets_new)
+	if path.isfile(url_assets + '/' +file_name):
+		os.rename(url_assets + '/' +file_name, url_assets_new + '/' +file_name)
+	else:
+		f = open(url_assets_new + '/' + file_name, 'wb')
 		meta = u.info()
 		file_size = int(meta.getheaders("Content-Length")[0])
 		print "Downloading: %s Bytes: %s" % (file_name, file_size)
@@ -49,6 +63,14 @@ def copy(row):
 			print status,
 
 		f.close()
+
+	shutil.rmtree(url_assets)
+	if not path.isdir(url_assets):
+		makedirs(url_assets)
+	shutil.move(url_assets, url_assets_new)
+	shutil.rmtree(url_assets_new)
+
+
 
 class scheduler(object):
 
