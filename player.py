@@ -13,7 +13,7 @@ import webbrowser
 
 def playVideo_browser(filename, url_file, url_add):
 	#maybe i have to add the tipe of all files type="video/mp4"
-	url = url_add +'player.html';
+	url = url_add +'/player.html';
 	html = ("<html><head><style>video#bgvid {position: fixed; right: 0; bottom: 0;"
 			"min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -100;" 
 			"background-size: cover;} </style></head><body><video autoplay id='bgvid'>"
@@ -27,7 +27,7 @@ def playVideo_browser(filename, url_file, url_add):
 	return
 
 def playImage_browser_expand(filename, url_file, url_add, duration):
-	url = url_add +'expandImage.html';
+	url = url_add +'/expandImage.html';
 	html = ("<html><head><style> html { "
 			"background:url('"+url_file +"/"+ filename+"')"
 			" center center no-repeat; background-size: 100% 100%; } </style></head>"
@@ -40,7 +40,7 @@ def playImage_browser_expand(filename, url_file, url_add, duration):
 	return
 
 def playImage_browser_originalSize(filename, url_file, url_add, duration):
-	url = url_add +'originalImage.html';
+	url = url_add +'/originalImage.html';
 	html = ("<html><head><style> html {background:url('"+url_file +"/"+ filename+"') "
 			"center center no-repeat;} </style></head><body></body><script>"
 			"setTimeout(closeBrowser, "+ str(duration) + " );function closeBrowser(e) {"
@@ -52,6 +52,6 @@ def playImage_browser_originalSize(filename, url_file, url_add, duration):
 	return
 
 def black_screen(url_add):
-	url = url_add +'black.html';
+	url = url_add +'/black.html';
 	webbrowser.open_new('file://'+url);
 	return

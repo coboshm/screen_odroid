@@ -11,14 +11,14 @@ import requests
 import json
 import urllib2
 import shutil
-import os
+from os import makedirs, path, rename
 
 config = configparser.ConfigParser();
 config.read('config.ini');
 
-url_assets = os.path.abspath(os.path.dirname(__file__))+'/playlist'
-url_assets_new = os.path.abspath(os.path.dirname(__file__))+'/playlist_new'
-url_templates = os.path.abspath(os.path.dirname(__file__))+'/templates'
+url_assets = path.abspath(path.dirname(__file__))+'/playlist'
+url_assets_new = path.abspath(path.dirname(__file__))+'/playlist_new'
+url_templates = path.abspath(path.dirname(__file__))+'/templates'
 
 def delete_folder(pth) :
     for sub in pth.iterdir() :
@@ -42,7 +42,7 @@ def copy(row):
 	if not path.isdir(url_assets_new):
 		makedirs(url_assets_new)
 	if path.isfile(url_assets + '/' +file_name):
-		os.rename(url_assets + '/' +file_name, url_assets_new + '/' +file_name)
+		rename(url_assets + '/' +file_name, url_assets_new + '/' +file_name)
 	else:
 		f = open(url_assets_new + '/' + file_name, 'wb')
 		meta = u.info()
@@ -63,12 +63,7 @@ def copy(row):
 			print status,
 
 		f.close()
-
-	shutil.rmtree(url_assets)
-	if not path.isdir(url_assets):
-		makedirs(url_assets)
-	shutil.move(url_assets, url_assets_new)
-	shutil.rmtree(url_assets_new)
+	
 
 
 
@@ -89,6 +84,13 @@ class scheduler(object):
 			
 			for row in self.assets:
 				copy(row);
+
+			if path.isdir(url_assets):
+				shutil.rmtree(url_assets)
+			if not path.isdir(url_assets):
+				shutil.copytree(url_assets_new , url_assets)
+			if path.isdir(url_assets_new):
+				shutil.rmtree(url_assets_new)
 
 			self.index = 0
 			self.internet = 1

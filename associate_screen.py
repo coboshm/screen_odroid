@@ -12,7 +12,8 @@ import sys
 import configparser
 import requests
 import webbrowser
-import os
+import json
+import urllib2
 
 def showCode_browser(code, url_add):
 
@@ -30,25 +31,26 @@ def showCode_browser(code, url_add):
     webbrowser.open_new('file://'+url);
     return
 
-def main(argv=None):
+
+def active_screen(code):
+
     config = configparser.ConfigParser();
     config.read('config.ini');
 
-    url_templates = os.path.abspath(os.path.dirname(__file__))+'/templates'
+    req = urllib2.Request('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/is_active_screen')
+    req.add_header('Content-Type', 'application/json');
+    data = {'code': code};
+    response = urllib2.urlopen(req, json.dumps(data));
 
-    if (config['DEFAULT']['code_screen'] == '') :
-        r = requests.post('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/new_screen');
-        config.set('DEFAULT','code_screen',r.json());
-        with open('config.ini', 'wb') as configfile:
-            config.write(configfile);
-        showCode_browser(config['DEFAULT']['code_screen'], url_templates);
+    active = json.loads(response.read());
+    print active
 
-    else :
-        #Case that already have code but not associated to a user 
-        #we only have to show the code in firefox
-        showCode_browser(config['DEFAULT']['code_screen'], url_templates);
-    
+    config.set('DEFAULT','active',str(active));
+    with open('config.ini', 'wb') as configfile:
+        config.write(configfile);
     return
 
-if __name__ == "__main__":
-  sys.exit(main())
+
+
+
+
