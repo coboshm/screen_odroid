@@ -17,7 +17,7 @@ import os
 def showCode_browser(code, url_add):
 
     url = url_add +  '/new_screen.html';
-    html = ("<html><head><style>body {margin:100px 0px; padding:0px;text-align:center; background: url('"+url_add+"bg.jpg') no-repeat fixed center;" 
+    html = ("<html><head><style>body {margin:100px 0px; padding:0px;text-align:center; background: url('"+url_add+"/bg.jpg') no-repeat fixed center;" 
             " background-size: cover} #Content "
             "{ width:500px; margin:0px auto; text-align:left; padding:15px; margin-top:100px; background-color:#fff;"
             "-webkit-box-shadow: 4px 4px 0px 0px rgba(184,184,184,1); -moz-box-shadow: 4px 4px 0px 0px rgba(184,184,184,1);"
