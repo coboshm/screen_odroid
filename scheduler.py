@@ -16,9 +16,9 @@ import os
 config = configparser.ConfigParser();
 config.read('config.ini');
 
-url_assets = os.path.abspath(__file__)+'/playlist'
-url_assets_new = os.path.abspath(__file__)+'/playlist_new'
-url_templates = os.path.abspath(__file__)+'/templates'
+url_assets = os.path.abspath(os.path.basename(__file__))+'/playlist'
+url_assets_new = os.path.abspath(os.path.basename(__file__))+'/playlist_new'
+url_templates = os.path.abspath(os.path.basename(__file__))+'/templates'
 
 def delete_folder(pth) :
     for sub in pth.iterdir() :
