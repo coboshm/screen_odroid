@@ -18,8 +18,8 @@ def main(argv=None):
 	config = configparser.ConfigParser();
 	config.read('config.ini');
 
-	url_assets = os.path.abspath(os.path.basename(__file__))+'/playlist'
-	url_templates = os.path.abspath(os.path.basename(__file__))+'/templates'
+	url_assets = os.path.abspath(os.path.dirname(__file__))+'/playlist'
+	url_templates = os.path.abspath(os.path.dirname(__file__))+'/templates'
 
 	scheduler2 = scheduler();
 
