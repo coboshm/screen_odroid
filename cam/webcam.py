@@ -1,5 +1,6 @@
 import cv2
 import sys
+from time import sleep
 
 cascPath = sys.argv[1]
 faceCascade = cv2.CascadeClassifier(cascPath)
@@ -21,13 +22,14 @@ while True:
     )
 
     # Draw a rectangle around the faces
-    #for (x, y, w, h) in faces:
-    #   cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    for (x, y, w, h) in faces:
+       cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     # Display the resulting frame
-    #cv2.imshow('Video', frame)
+    cv2.imshow('Video', frame)
     sys.stdout.write('\r' + "Num of faces:" + str(len(faces)) + ' ' * 20)
     sys.stdout.flush() # important
+    sleep(0.05);
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
