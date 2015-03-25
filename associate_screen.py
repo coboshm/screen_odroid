@@ -34,8 +34,7 @@ def main(argv=None):
     config = configparser.ConfigParser();
     config.read('config.ini');
 
-    url_assets = os.path.abspath(os.path.join(os.path.dirname(__file__),'/playlist'))
-    url_templates = os.path.abspath(os.path.join(os.path.dirname(__file__),'/templates'))
+    url_templates = os.path.abspath(__file__)+'/templates'
 
     if (config['DEFAULT']['code_screen'] == '') :
         r = requests.post('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/new_screen');
