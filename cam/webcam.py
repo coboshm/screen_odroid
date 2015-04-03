@@ -64,6 +64,11 @@ while True:
                 if ((x < x_2 and x + 20 > x_2) or (x - 20 < x_2 and x >= x_2)) and ((y >= y_2 and y - 5 <= y_2) or (y < y_2 and y + 5 >= y_2)):
                     is_correct = 0;
                     break
+                else:
+                    for k, (x_f, y_f, w_f, h_f) in enumerate(list_faces_2):
+                        if((x+w > x_f) or (x > x_f) and (y+h) > y_f or (y > y_f)):
+                            is_correct = 0;
+                            break;
             if is_correct == 1:
                 aux = [x,y,w,h]
                 quit_over.append(aux)
@@ -73,15 +78,13 @@ while True:
         for j, (x_aux, y_aux, w_aux, h_aux) in enumerate(quit_over):
             if i < j:
                 if ((x < x_aux and x + 100 > x_aux) or (x - 100 < x_aux and x >= x_aux)) and ((y >= y_aux and y - 8 <= y_aux) or (y < y_aux and y + 8 >= y_aux)):
-                    #for (x_f, y_f, w_f, h_f) in enumerate (list_faces_2):
-                        #for to check if the eyes are inside the found face 
                     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
                     cv2.rectangle(frame, (x_aux, y_aux), (x_aux+w, y_aux+h), (0, 0, 255), 2)
                     faces += 1
 
 
     
-    faces_buff.append(max(faces,len(list_faces_2)))
+    faces_buff.append(faces + len(list_faces_2))
     if count_frames == 20:
         faces = math.ceil(sum(faces_buff.get()) / float(len(faces_buff.get())))
         sys.stdout.write('\r' + "Num of faces:" + str(faces) + ' ' * 20)
