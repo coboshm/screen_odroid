@@ -8,7 +8,7 @@ __copyright__ = "Copyright 2015, Marc Cobos"
 __author__  = 'coboshernandez@gmail.com'
 
 import sys
-import webbrowser
+import subprocess
 
 
 def playVideo_browser(filename, url_file, url_add):
@@ -23,7 +23,8 @@ def playVideo_browser(filename, url_file, url_add):
 	f = open(url, 'w');
 	f.write(html);
 	f.close();
-	webbrowser.open_new('file://'+url);
+	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	subprocess.Popen(cmd);
 	return
 
 def playImage_browser_expand(filename, url_file, url_add, duration):
@@ -36,7 +37,8 @@ def playImage_browser_expand(filename, url_file, url_add, duration):
 	f = open(url, 'w');
 	f.write(html);
 	f.close();
-	webbrowser.open_new('file://'+url);
+	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	subprocess.Popen(cmd);
 	return
 
 def playImage_browser_originalSize(filename, url_file, url_add, duration):
@@ -48,10 +50,12 @@ def playImage_browser_originalSize(filename, url_file, url_add, duration):
 	f = open(url, 'w');
 	f.write(html);
 	f.close();
-	webbrowser.open_new('file://'+url);
+	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	subprocess.Popen(cmd);
 	return
 
 def black_screen(url_add):
 	url = url_add +'/black.html';
-	webbrowser.open_new('file://'+url);
+	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	subprocess.Popen(cmd);
 	return

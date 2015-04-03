@@ -47,15 +47,27 @@ def main(argv=None):
 				config.read('config.ini');
     
 	scheduler2 = scheduler();
+	asset = scheduler2.get_next_asset();
+	file_name = asset["path"].split('/')[-1];
 	while True:
-		asset = scheduler2.get_next_asset();
-		file_name = asset["path"].split('/')[-1];
+		#os.system('setterm -cursor off')
 		if asset["tipo"].split('/')[-2] == 'image':
-			playImage_browser_originalSize(file_name, url_assets, url_templates, asset["duration"]*1000)
+			playImage_browser_expand(file_name, url_assets, url_templates, asset["duration"]*1000)
+			duration = asset["duration"];
+			asset = scheduler2.get_next_asset();
+			file_name = asset["path"].split('/')[-1];
+			sleep(duration-1)
 		else:
 			playVideo_browser(file_name, url_assets, url_templates)
+			duration = asset["duration"];
+			asset = scheduler2.get_next_asset();
+			file_name = asset["path"].split('/')[-1];
+			if asset["tipo"].split('/')[-2] == 'image':
+				sleep(duration-1)
+			else:
+				sleep(duration-0.5)
 
-		sleep(asset["duration"]-1)
+		
 	return
 
 if __name__ == "__main__":

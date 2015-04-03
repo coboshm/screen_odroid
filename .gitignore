@@ -1,2 +1,3 @@
 /playlist/
 .DS_Store
+*.pyc
