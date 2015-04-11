@@ -9,11 +9,12 @@ __copyright__ = "Copyright 2015, Marc Cobos"
 __author__  = 'coboshernandez@gmail.com'
 
 import sys
+import os
 import configparser
 import requests
-import webbrowser
 import json
 import urllib2
+import subprocess
 
 def showCode_browser(code, url_add):
 
@@ -28,25 +29,22 @@ def showCode_browser(code, url_add):
     f = open(url, 'w');
     f.write(html);
     f.close();
-    webbrowser.open_new('file://'+url);
+    cmd = ["chromium-browser", "--kiosk",  "--user-data-dir", 'file://'+url]
+    subprocess.Popen(cmd);
     return
 
 
 def active_screen(code):
-
     config = configparser.ConfigParser();
-    config.read('config.ini');
-
+    config.read(os.path.abspath(os.path.join(os.path.dirname(__file__),'config.ini')));
     req = urllib2.Request('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/is_active_screen')
     req.add_header('Content-Type', 'application/json');
     data = {'code': code};
     response = urllib2.urlopen(req, json.dumps(data));
-
     active = json.loads(response.read());
-    print active
 
     config.set('DEFAULT','active',str(active));
-    with open('config.ini', 'wb') as configfile:
+    with open(os.path.abspath(os.path.join(os.path.dirname(__file__),'config.ini')), 'wb') as configfile:
         config.write(configfile);
     return
 

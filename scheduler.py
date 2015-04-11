@@ -7,14 +7,12 @@ __copyright__ = "Copyright 2015, Marc Cobos"
 __author__  = 'coboshernandez@gmail.com'
 
 import configparser
+import subprocess
 import requests
 import json
 import urllib2
 import shutil
 from os import makedirs, path, rename
-
-config = configparser.ConfigParser();
-config.read('config.ini');
 
 url_assets = path.abspath(path.dirname(__file__))+'/playlist'
 url_assets_new = path.abspath(path.dirname(__file__))+'/playlist_new'
@@ -30,11 +28,13 @@ def delete_folder(pth) :
 
 def internet_on(host, port):
     try:
-        response=urllib2.urlopen('http://' + host + ':' + port ,timeout=20);
+        response=urllib2.urlopen('http://google.com',timeout=20);
         return True
     except Exception as err: return False
 
 def copy(row):
+	config = configparser.ConfigParser();
+	config.read(path.abspath(path.join(path.dirname(__file__),'config.ini')));
 	u = urllib2.urlopen('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + row["path"]);
 
 	file_name = row["path"].split('/')[-1]
@@ -71,8 +71,16 @@ class scheduler(object):
 
 	def __init__(self, *args, **kwargs):
 
+
+		config = configparser.ConfigParser();
+		config.read(path.abspath(path.join(path.dirname(__file__),'config.ini')));
+
+		
 		
 		if internet_on(config['DEFAULT']['host'], config['DEFAULT']['port']):
+
+			cmd = ["chromium-browser", "--kiosk", "--user-data-dir", 'http://localhost:3000/downloading']
+			browsr = subprocess.Popen(cmd);
 			
 			req = urllib2.Request('http://' + config['DEFAULT']['host'] +':'+ config['DEFAULT']['port'] + '/api/playlist')
 			req.add_header('Content-Type', 'application/json');
@@ -80,6 +88,10 @@ class scheduler(object):
 			response = urllib2.urlopen(req, json.dumps(data));
 			
 			assets = json.loads(response.read());
+			with open('/tmp/playerlist.json', 'w') as outfile:
+				json.dump(assets, outfile)
+
+			
 			self.assets = [item for item in assets[0]];
 			
 			for row in self.assets:
@@ -92,22 +104,25 @@ class scheduler(object):
 			if path.isdir(url_assets_new):
 				shutil.rmtree(url_assets_new)
 
-			self.index = 0
-			self.internet = 1
-			self.nassets = len(self.assets);
-			
+			#self.index = 0
+			#self.internet = 1
+			#self.nassets = len(self.assets);
+			subprocess.Popen.kill(browsr)
+			self.status = 0
 			return
 		else:
-			self.nassets = 0
-			self.index = 0
-			self.assets = None
-			return
+			#self.nassets = 0
+			#self.index = 0
+			#self.assets = None
+			self.status = -1
+			return 
 
 
-	def get_next_asset(self):
-		if self.nassets == 0:
-			return None
-		idx = self.index
-		self.index = (self.index + 1) % self.nassets
-		return self.assets[idx]
+	def get_status(self):
+		#if self.nassets == 0:
+		#	return None
+		#idx = self.index
+		#self.index = (self.index + 1) % self.nassets
+		#return self.assets[idx]
+		return self.status
 

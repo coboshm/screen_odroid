@@ -23,7 +23,7 @@ def playVideo_browser(filename, url_file, url_add):
 	f = open(url, 'w');
 	f.write(html);
 	f.close();
-	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	cmd = ["chromium-browser", "--kiosk", "--user-data-dir", 'file://'+url]
 	subprocess.Popen(cmd);
 	return
 
@@ -37,7 +37,7 @@ def playImage_browser_expand(filename, url_file, url_add, duration):
 	f = open(url, 'w');
 	f.write(html);
 	f.close();
-	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	cmd = ["chromium-browser", "--kiosk",  "--user-data-dir", 'file://'+url]
 	subprocess.Popen(cmd);
 	return
 
@@ -50,12 +50,12 @@ def playImage_browser_originalSize(filename, url_file, url_add, duration):
 	f = open(url, 'w');
 	f.write(html);
 	f.close();
-	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	cmd = ["chromium-browser", "--kiosk",  "--user-data-dir", 'file://'+url]
 	subprocess.Popen(cmd);
 	return
 
 def black_screen(url_add):
 	url = url_add +'/black.html';
-	cmd = ["chromium-browser", "--kiosk", 'file://'+url]
+	cmd = ["chromium-browser", "--kiosk",  "--user-data-dir", 'file://'+url]
 	subprocess.Popen(cmd);
 	return
