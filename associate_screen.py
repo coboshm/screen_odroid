@@ -16,24 +16,6 @@ import json
 import urllib2
 import subprocess
 
-def showCode_browser(code, url_add):
-
-    url = url_add +  '/new_screen.html';
-    html = ("<html><head><style>body {margin:100px 0px; padding:0px;text-align:center; background: url('"+url_add+"/bg.jpg') no-repeat fixed center;" 
-            " background-size: cover} #Content "
-            "{ width:500px; margin:0px auto; text-align:left; padding:15px; margin-top:100px; background-color:#fff;"
-            "-webkit-box-shadow: 4px 4px 0px 0px rgba(184,184,184,1); -moz-box-shadow: 4px 4px 0px 0px rgba(184,184,184,1);"
-            "box-shadow: 4px 4px 0px 0px rgba(184,184,184,1); border-radius: 5px; }</style></head><body><img src='logo.png'/>"
-            "<div id='Content'><span style='font-weight: bold; padding: 20px; font-family: Verdana, Geneva, sans-serif; '>Screen code:</span>"
-            +code+"</div></body></html>");
-    f = open(url, 'w');
-    f.write(html);
-    f.close();
-    cmd = ["chromium-browser", "--kiosk",  "--user-data-dir", 'file://'+url]
-    subprocess.Popen(cmd);
-    return
-
-
 def active_screen(code):
     config = configparser.ConfigParser();
     config.read(os.path.abspath(os.path.join(os.path.dirname(__file__),'config.ini')));
@@ -42,11 +24,7 @@ def active_screen(code):
     data = {'code': code};
     response = urllib2.urlopen(req, json.dumps(data));
     active = json.loads(response.read());
-
-    config.set('DEFAULT','active',str(active));
-    with open(os.path.abspath(os.path.join(os.path.dirname(__file__),'config.ini')), 'wb') as configfile:
-        config.write(configfile);
-    return
+    return active
 
 
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SOFTWARE_ODROID="http://192.168.1.33:3000/odroid/odroidSoftware.zip"
-SOFTWARE_ODROID_BOTTLE="http://192.168.1.33:3000/odroid/odroidBottle.zip"
+SOFTWARE_ODROID="http://192.168.1.36:3000/odroid/odroidSoftware.zip"
+SOFTWARE_ODROID_BOTTLE="http://192.168.1.36:3000/odroid/odroidBottle.zip"
 INITNAME="script_init"
 
 echo "Installing...it might take a while (5/10 minutes)"
@@ -12,8 +12,6 @@ echo "Installing dependencies..."
 sudo apt-get -y -qq install python-pip python-simplejson libopencv-dev python-opencv python-imaging python-dev python-numpy python-dev python-tk python-mechanize watchdog supervisor > /dev/null
 sudo apt-get -y -qq install cron > /dev/null
 
-rm -rf /tmp/log/impactScreen
-mkdir /tmp/log/impactScreen
 $(rm -rf $HOME/.impactScreen)
 $(mkdir $HOME/.impactScreen)
 $(rm -rf $HOME/.bottle_server)
@@ -40,12 +38,27 @@ sudo pip install -r .impactScreen/requirements.txt -q
 
 echo "Adding ImpactScreen to X auto start..."
 mkdir -p "$HOME/.config/lxsession/Lubuntu/"
+#echo "@$HOME/.impactScreen/installation/bottle_server.sh" > "$HOME/.config/lxsession/Lubuntu/autostart"
 echo "@$HOME/.impactScreen/installation/xloader.sh" > "$HOME/.config/lxsession/Lubuntu/autostart"
+echo "@$HOME/.impactScreen/installation/webcamloader.sh" >> "$HOME/.config/lxsession/Lubuntu/autostart"
+
+echo "Quiting the cursor in X"
+sudo rm /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
+sudo mv "$HOME/.impactScreen/installation/50-xserver-command.conf" /usr/share/lightdm/lightdm.conf.d/50-xserver-command.conf
 
 rm /etc/supervisor/conf.d/impactScreen.conf
 sudo ln -s "$HOME/.impactScreen/installation/supervisor_impactScreen.conf" /etc/supervisor/conf.d/impactScreen.conf
 sudo /etc/init.d/supervisor stop > /dev/null
 sudo /etc/init.d/supervisor start > /dev/null
+
+echo "Europe/Madrid" >> "/etc/timezone"
+sudo rm /etc/localtime
+sudo ln -s "usr/share/zoneinfo/right/Europe/Madrid" /etc/localtime
+#sudo mv "$HOME/.impactScreen/installation/ntpdate" /etc/crond.daily/ntpdate
+
+echo "Supervisor setup"
+sudo rm /etc/rc2.d/*supervisor
+sudo ln -s "/etc/init.d/supervisor" /etc/rc2.d/S90supervisor
 
 
 [ -f "$HOME/.config/openbox/lubuntu-rc.xml" ] && \

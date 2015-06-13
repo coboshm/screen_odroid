@@ -1,0 +1,3 @@
+#!/bin/bash
+ntpd -q -p es.pool.ntp.org
+/sbin/hwclock --systohc

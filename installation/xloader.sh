@@ -3,8 +3,7 @@
 PATH=/usr/bin:/usr/sbin:/bin:/sbin
 
 mkdir /tmp/log
-mkdir /tmp/log/impactScreen
-LOG=/tmp/log/impactScreen/impactScreen.log
+LOG=/tmp/log/impactScreen.log
 
 echo "Disabling screen power savings..." > $LOG
 
@@ -12,6 +11,7 @@ echo "Disabling screen power savings..." > $LOG
 xset s off          # Don't activate screensaver
 xset -dpms          # Disable DPMS (Energy Star) features
 xset s noblank      # Don't blank the video device
+sleep 10
 
 echo "Launching infinite loop..." >> $LOG
 while true; do
